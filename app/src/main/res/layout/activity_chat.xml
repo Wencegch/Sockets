@@ -4,16 +4,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
+    android:background="@drawable/background_whatsapp"
     tools:context=".ChatActivity">
 
     <EditText
         android:id="@+id/txtMensaje"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_width="294dp"
+        android:layout_height="49dp"
         android:layout_marginStart="3dp"
         android:layout_marginTop="5dp"
-        android:layout_marginBottom="3dp"
+        android:layout_marginBottom="10dp"
         android:background="@color/white"
         android:ems="10"
         android:hint="Mensaje"
@@ -30,6 +30,7 @@
         android:layout_height="66dp"
         android:layout_marginEnd="3dp"
         android:text="Enviar"
+        app:cornerRadius="100dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/recyclerView" />
@@ -38,7 +39,6 @@
         android:id="@+id/recyclerView"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:background="@drawable/background_whatsapp"
         app:layout_constraintBottom_toTopOf="@+id/guideline"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -49,6 +49,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.9" />
+        app:layout_constraintGuide_percent="0.88" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

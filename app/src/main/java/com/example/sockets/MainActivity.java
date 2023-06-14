@@ -14,6 +14,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
     private ConstraintLayout constraintLayout;
@@ -44,11 +45,17 @@ public class MainActivity extends AppCompatActivity {
         btnConectar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                String nombre = txtNombreUsuario.getText().toString().trim();
+                String ip = txtIp.getText().toString().trim();
 
-                Intent i = new Intent(MainActivity.this, ChatActivity.class);
-                i.putExtra("Nombre", txtNombreUsuario.getText().toString().trim());
-                i.putExtra("Ip", txtIp.getText().toString().trim());
-                startActivity(i);
+                if (nombre.equals("") || ip.equals("")){
+                    Toast.makeText(MainActivity.this,"Debes introducir nombre y ip",Toast.LENGTH_SHORT).show();
+                }else{
+                    Intent i = new Intent(MainActivity.this, ChatActivity.class);
+                    i.putExtra("Nombre", txtNombreUsuario.getText().toString().trim());
+                    i.putExtra("Ip", txtIp.getText().toString().trim());
+                    startActivity(i);
+                }
             }
         });
     }
