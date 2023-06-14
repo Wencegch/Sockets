@@ -6,13 +6,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.sockets.IO.Cliente;
 import com.example.sockets.IO.Servidor;
@@ -47,18 +43,26 @@ public class ChatActivity extends AppCompatActivity {
 
         btnEnviar = findViewById(R.id.btnEnviar);
         txtMensaje = findViewById(R.id.txtMensaje);
+
+        /*Se crean la instancia del recyclerAdapter, y se le pasa a este último la lista como parámetro de inicialización.*/
         recyclerView = findViewById(R.id.recyclerView);
+        recyclerAdapter = new RecyclerAdapter(listaPaqueteEnvio);
 
         Intent i = getIntent();
         if (i != null) {
             txtNombreChat = i.getExtras().getString("Nombre");
             txtIpChat = i.getExtras().getString("Ip");
         }
-
+        /*La clase LayoutManager tiene la responsabilidad de manejar la disposición de los elementos
+         * en una lista dentro de un RecyclerView. Hay varias opciones disponibles, como GridLayoutManager
+         * que los coloca en una vista de rejilla. En este caso se ha utilizado el modo Linear para una
+         * disposición básica, con un elemento debajo de otro.*/
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
-        recyclerView.setLayoutManager(linearLayoutManager);
-        recyclerAdapter = new RecyclerAdapter(listaPaqueteEnvio);
+
+        /*Finalmente, solo necesitamos agregar los elementos creados previamente a la vista principal (RecyclerView)
+         * utilizando sus respectivos métodos.*/
         recyclerView.setAdapter(recyclerAdapter);
+        recyclerView.setLayoutManager(linearLayoutManager);
 
         hiloServidor = new Thread(new Runnable() {
             @Override

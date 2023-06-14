@@ -11,6 +11,10 @@ public class Cliente {
     private String ip;
     private ObjectOutputStream flujo_salida;
 
+    /**
+     *Contructor que recibe una Ip
+     * @param ip Ip que recibe al conectarse
+     */
     public Cliente(String ip){
         this.ip = ip;
         try {
@@ -20,6 +24,10 @@ public class Cliente {
         }
     }
 
+    /**
+     *Envía un objeto de tipo PaqueteEnvio
+     * @param paqueteEnvio nombre, ip y mensaje
+     */
     public void EnviaTexto(PaqueteEnvio paqueteEnvio){
         try {
             if(miSocket != null) {
