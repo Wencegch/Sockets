@@ -39,6 +39,7 @@ public class ChatActivity extends AppCompatActivity {
     private String txtIpChat;
 
     private Button btnEnviar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,13 +50,12 @@ public class ChatActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.recyclerView);
 
         Intent i = getIntent();
-        if (i != null){
+        if (i != null) {
             txtNombreChat = i.getExtras().getString("Nombre");
             txtIpChat = i.getExtras().getString("Ip");
         }
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
-
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerAdapter = new RecyclerAdapter(listaPaqueteEnvio);
         recyclerView.setAdapter(recyclerAdapter);
@@ -63,7 +63,7 @@ public class ChatActivity extends AppCompatActivity {
         hiloServidor = new Thread(new Runnable() {
             @Override
             public void run() {
-                if (servidor == null){
+                if (servidor == null) {
                     servidor = new Servidor();
                 }
             }
@@ -79,15 +79,14 @@ public class ChatActivity extends AppCompatActivity {
         hiloMensaje = new Thread(new Runnable() {
             @Override
             public void run() {
-                while(!servidor.online){
+                while (!servidor.online) {
                     servidor.RecibirMensaje();
                     paqueteEnvio = servidor.getPaqueteEnvio();
-                    if (paqueteEnvio != null){
+                    if (paqueteEnvio != null) {
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
                                 listaPaqueteEnvio.add(paqueteEnvio);
-                                Log.d("INSERTADO", paqueteEnvio.getMensaje() + " " + listaPaqueteEnvio.size());
                                 recyclerAdapter.notifyItemInserted(listaPaqueteEnvio.size() - 1);
                                 recyclerAdapter.notifyItemRangeChanged(listaPaqueteEnvio.size() - 1, listaPaqueteEnvio.size());
                                 recyclerView.scrollToPosition(listaPaqueteEnvio.size() - 1);
@@ -95,7 +94,6 @@ public class ChatActivity extends AppCompatActivity {
                         });
                     }
                 }
-
             }
         });
         hiloMensaje.start();
@@ -104,7 +102,7 @@ public class ChatActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 mensaje = txtMensaje.getText().toString().trim();
-                if(!mensaje.equals("")){
+                if (!mensaje.equals("")) {
                     txtMensaje.setText("");
 
                     hiloCliente = new Thread(new Runnable() {
@@ -115,6 +113,13 @@ public class ChatActivity extends AppCompatActivity {
                         }
                     });
                     hiloCliente.start();
+
+                    // Agregar el mensaje enviado por ti mismo a la lista y actualizar el adaptador
+                    PaqueteEnvio paqueteEnvioPropio = new PaqueteEnvio(txtNombreChat, txtIpChat, mensaje);
+                    listaPaqueteEnvio.add(paqueteEnvioPropio);
+                    recyclerAdapter.notifyItemInserted(listaPaqueteEnvio.size() - 1);
+                    recyclerAdapter.notifyItemRangeChanged(listaPaqueteEnvio.size() - 1, listaPaqueteEnvio.size());
+                    recyclerView.scrollToPosition(listaPaqueteEnvio.size() - 1);
                 }
             }
         });
@@ -123,8 +128,8 @@ public class ChatActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        servidor.online = true;    //  Este parámetro actúa de semáforo para detener el hilo encargado de escuchar los mensajes.
-        //  Por si acaso, tratamos de forzar la interrupción del hilo manualmente.
+        servidor.online = true;
+
         if (hiloMensaje.isAlive()) {
             try {
                 hiloMensaje.interrupt();
@@ -133,6 +138,5 @@ public class ChatActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
         }
-
     }
 }
