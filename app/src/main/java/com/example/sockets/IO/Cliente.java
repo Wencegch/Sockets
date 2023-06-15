@@ -12,7 +12,7 @@ public class Cliente {
     private ObjectOutputStream flujo_salida;
 
     /**
-     *Contructor que recibe una Ip
+     * Contructor que recibe una Ip
      * @param ip Ip que recibe al conectarse
      */
     public Cliente(String ip){
@@ -25,7 +25,7 @@ public class Cliente {
     }
 
     /**
-     *Envía un objeto de tipo PaqueteEnvio
+     * Envía un objeto de tipo PaqueteEnvio
      * @param paqueteEnvio nombre, ip y mensaje
      */
     public void EnviaTexto(PaqueteEnvio paqueteEnvio){

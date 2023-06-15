@@ -29,44 +29,30 @@ public class Servidor{
         return paqueteEnvio;
     }
 
-    public void MensajeEntrante(){
-        try{
-            if(serverSocket != null) {
-                System.out.println("Esperando conexión");
-                miSocket = serverSocket.accept();
-                System.out.println("Cliente en línea");
-
-                flujo_entrada = new ObjectInputStream(miSocket.getInputStream());
-                paqueteEnvio = (PaqueteEnvio) flujo_entrada.readObject();
-
-                System.out.println("Fin de la conexión");
-                flujo_entrada.close();
-                serverSocket.close();
-            }
-        }catch (IOException e){
-            System.out.println(e.getMessage());
-        } catch (ClassNotFoundException e) {
-            System.out.printf(e.getMessage());
-        }
-    }
-
     public PaqueteEnvio getMensaje(){
         return paqueteEnvio;
     }
+
+    /**
+     * Método encargado de recibir un mensaje enviado a través de un socket en un servidor
+     */
     public void RecibirMensaje(){
         try {
             if (serverSocket!=null) {
+                //aceptamos todas las conexiones
                 miSocket = serverSocket.accept();
+                //Creamos un flujo de entrada de objetos
                 flujo_entrada = new ObjectInputStream(miSocket.getInputStream());
+                //Se lee un objeto del flujo de entrada y se hace casting
                 paqueteEnvio = (PaqueteEnvio) flujo_entrada.readObject();
-                Log.d("SERVIDOR", "Mensaje obtenido: " + paqueteEnvio.getMensaje());
+                //Se cierra el flujo de entrada y el socket
                 flujo_entrada.close();
                 miSocket.close();
             }
         } catch (IOException e) {
-            Log.d("SERVIDOR", "Fin de la conexión.");
+            System.out.println(e.getMessage());
         } catch (ClassNotFoundException e) {
-            Log.d("SERVIDOR", "No se pudo realizar el casting en la lectura de Mensaje.");
+            System.out.println(e.getMessage());
         }
     }
 }
